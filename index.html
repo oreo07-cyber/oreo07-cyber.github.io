@@ -3,21 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stoodnt AI Chatbot</title>
+    <title>Your AI and Amadeus Integrated Website</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            Stoodnt AI Chatbot
+    <header>
+        <div class="container">
+            <h1>Your Company Name</h1>
+            <!-- You can add a logo image here if needed -->
         </div>
-        <div class="chat-messages" id="chat-messages">
-            <!-- Chat messages will appear here -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message here...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+    </header>
+
+    <div class="container">
+        <main class="main-content">
+            <section id="home">
+                <h2>About Us</h2>
+                <p>Welcome to Your Company! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero et elit sagittis, nec facilisis ipsum interdum. Donec sit amet arcu quis risus euismod consectetur.</p>
+                <!-- Add more content about your company -->
+            </section>
+
+            <section id="product">
+                <h2>Our Product</h2>
+                <div class="chat-container">
+                    <div class="chat-header">
+                        Chat with our AI
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Chat messages will appear here -->
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="user-input" placeholder="Type your message here...">
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <script type="module" src="app.js"></script>

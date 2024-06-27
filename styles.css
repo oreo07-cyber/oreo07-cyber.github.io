@@ -1,119 +1,110 @@
-body {
+/* Reset styles for cleaner layout */
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #34acdf; /* Replace with your preferred background color */
+    padding: 0;
+    box-sizing: border-box;
 }
-
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Light grey background */
+    color: #333; /* Dark grey text */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #ff6f61; /* Red header background */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px 0;
+}
+.main-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
 .chat-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 95vh;
-    max-height: 95vh;
-    width: 100%;
-    background-color: #fff;
+    height: 70vh; /* Adjust height as needed */
+    max-height: 70vh;
+    background-color: #fff; /* White chat container background */
     border-radius: 10px; /* Rounded corners */
     overflow: hidden;
     position: relative;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .chat-header {
-    background-color: #eb8914; /* Replace with your primary color */
+    background-color: #ff6f61; /* Red header background */
     color: white;
     padding: 15px;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    flex-shrink: 0;
+    margin-bottom: 10px;
+    border-radius: 8px;
 }
-
 .chat-messages {
     flex: 1;
-    padding: 20px;
+    padding: 10px;
     overflow-y: auto;
-    transition: opacity 0.5s ease-in-out;
+    background-color: #f9f9f9; /* Light grey chat messages background */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
-
 .chat-input {
     display: flex;
-    padding: 15px;
-    border-top: 1px solid #ddd;
-    background-color: #d2ecf9; /* Replace with your background color */
-    flex-shrink: 0;
+    align-items: center;
+    background-color: #fff; /* White input background */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-.chat-input input {
+.chat-input input[type="text"] {
     flex: 1;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     font-size: 16px;
+    margin-right: 10px;
 }
-
 .chat-input button {
-    background-color: #eb8914; /* Replace with your primary color */
+    background-color: #ff6f61; /* Red button background */
     color: white;
     border: none;
-    padding: 15px;
-    margin-left: 10px;
-    border-radius: 25px;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
 .chat-input button:hover {
-    background-color: #002080; /* Darker shade of primary color */
+    background-color: #e05244; /* Darker shade of red */
 }
-
 .message {
     margin-bottom: 10px;
-    animation: slideUp 0.5s ease;
+    padding: 10px;
+    border-radius: 5px;
+    clear: both;
+    overflow: hidden;
 }
-
 .message.user {
     text-align: right;
+    background-color: #007bff; /* Blue background for user messages */
+    color: white;
 }
-
 .message.ai {
     text-align: left;
-    border-left: 4px solid #eb8914; /* Border color for AI messages */
-    padding-left: 10px; /* Add padding for AI messages */
-}
-
-.typing-indicator {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #0033A0;
-    margin-right: 5px;
-    animation: wave 1.2s infinite ease-in-out;
-}
-
-.typing-indicator:nth-child(2) {
-    animation-delay: -1.1s;
-}
-
-.typing-indicator:nth-child(3) {
-    animation-delay: -1.0s;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes wave {
-    0%, 60%, 100% {
-        transform: initial;
-    }
-    30% {
-        transform: translateY(-10px);
-    }
+    background-color: #6c757d; /* Grey background for AI messages */
+    color: white;
 }
