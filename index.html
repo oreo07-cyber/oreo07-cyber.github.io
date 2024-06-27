@@ -3,28 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vacation Planner</title>
+    <title>Stoodnt AI Chatbot</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-box">
-            <div id="chat-history"></div>
+    <div class="chat-container">
+        <div class="chat-header">
+            Stoodnt AI Chatbot
         </div>
-        <input type="text" id="user-input" placeholder="Type a message">
-        <button id="send-button">Send</button>
-    </div>
-
-    <!-- Popup for flight options -->
-    <div class="popup" id="flight-popup">
-        <div class="popup-content">
-            <span class="close-button" id="close-popup">&times;</span>
-            <h2>Flight Options</h2>
-            <div id="flight-options"></div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button onclick="sendMessage()">Send</button>
         </div>
     </div>
 
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

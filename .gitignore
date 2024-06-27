@@ -1,2 +1,12 @@
-config.js
+# Node.js / npm
 node_modules/
+npm-debug.log
+
+# Config files
+config.js
+
+# macOS
+.DS_Store
+
+# IDE files (e.g., Visual Studio Code)
+.vscode/

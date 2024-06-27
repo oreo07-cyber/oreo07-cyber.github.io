@@ -1,90 +1,112 @@
-// app.js
+// Import necessary modules
+import OpenAI from 'openai-api';
+import Amadeus from 'amadeus';
 
-import config from './config.js';
+// Import config file for API keys
+import config from './config';
 
-const OPENAI_API_KEY = config.openai_api_key;
-const AMADEUS_API_KEY = config.amadeus_api_key;
-
-const chatHistory = document.getElementById('chat-history');
-const userInput = document.getElementById('user-input');
-const sendButton = document.getElementById('send-button');
-const flightPopup = document.getElementById('flight-popup');
-const closePopup = document.getElementById('close-popup');
-const flightOptions = document.getElementById('flight-options');
-
-sendButton.addEventListener('click', () => {
-    const message = userInput.value;
-    if (message.trim() !== '') {
-        addMessageToChat('user', message);
-        getBotResponse(message);
-        userInput.value = '';
-    }
+// Initialize OpenAI API client
+const openai = new OpenAI({
+    apiKey: config.openaiApiKey,
 });
 
+// Initialize Amadeus API client
+const amadeus = new Amadeus({
+    clientId: config.amadeus.clientId,
+    clientSecret: config.amadeus.clientSecret,
+});
+
+// Function to generate text using OpenAI
+async function generateText(prompt) {
+    try {
+        const result = await openai.complete({
+            engine: 'davinci',
+            prompt: prompt,
+            maxTokens: 150,
+            stop: ['\n'],
+        });
+        return result.data.choices[0].text.trim();
+    } catch (error) {
+        console.error('Error generating text from OpenAI:', error);
+        return 'Oops! Something went wrong on our end.';
+    }
+}
+
+// Function to search for flights using Amadeus
+async function searchFlights(destination) {
+    try {
+        const response = await amadeus.shopping.flightOffers.get({
+            originLocationCode: 'SFO', // Replace with your origin location code
+            destinationLocationCode: destination,
+            departureDate: '2024-07-01', // Replace with desired departure date
+            adults: 1, // Number of adults
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error searching flights with Amadeus:', error);
+        return 'Oops! Something went wrong while searching for flights.';
+    }
+}
+
+// Function to send message and handle responses
+async function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    if (userInput.value.trim() === '') {
+        return;
+    }
+
+    // Clear user input immediately
+    const message = userInput.value;
+    userInput.value = '';
+
+    // Add user message to chat
+    const userMessage = document.createElement('div');
+    userMessage.textContent = `You: ${message}`; // Include "You:" before user message
+    userMessage.classList.add('message', 'user');
+    chatMessages.appendChild(userMessage);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Add typing indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.classList.add('message', 'ai');
+    typingIndicator.innerHTML = '<div class="typing-indicator"></div><div class="typing-indicator"></div><div class="typing-indicator"></div>';
+    chatMessages.appendChild(typingIndicator);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Send user message to AI and get response
+    const aiResponse = await generateText(message);
+
+    // Remove typing indicator
+    chatMessages.removeChild(typingIndicator);
+
+    // Add AI response to chat
+    const aiMessage = document.createElement('div');
+    aiMessage.textContent = `AI: ${aiResponse}`; // Include "AI:" before AI response
+    aiMessage.classList.add('message', 'ai');
+    chatMessages.appendChild(aiMessage);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // If AI response contains a suggestion for a destination
+    if (aiResponse.includes('suggest a destination')) {
+        const destination = aiResponse.split('suggest a destination')[1].trim();
+        const flightOffers = await searchFlights(destination);
+        // Display flight offers or handle as needed
+        console.log('Flight offers:', flightOffers);
+    }
+}
+
+// Handle Enter key press to send message
+const userInput = document.getElementById('user-input');
 userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-        sendButton.click();
+        sendMessage();
     }
 });
-
-closePopup.addEventListener('click', () => {
-    flightPopup.style.display = 'none';
-});
-
-function addMessageToChat(sender, message) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add(`${sender}-message`);
-    messageElement.innerText = message;
-    chatHistory.appendChild(messageElement);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-}
-
-async function getBotResponse(message) {
-    addMessageToChat('bot', 'Thinking...');
-    const response = await fetch('https://api.openai.com/v1/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-            model: 'text-davinci-003',
-            prompt: message,
-            max_tokens: 150
-        })
-    });
-
-    const data = await response.json();
-    const botMessage = data.choices[0].text.trim();
-    addMessageToChat('bot', botMessage);
-
-    // After the bot provides a suggestion, fetch flight options
-    if (botMessage.toLowerCase().includes('suggesting')) {
-        fetchFlightOptions(botMessage);
-    }
-}
-
-async function fetchFlightOptions(city) {
-    // Simulating API call to Amadeus for flight options
-    addMessageToChat('bot', 'Fetching flight options...');
-    
-    const response = await fetch('https://test.api.amadeus.com/v2/shopping/flight-offers', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${AMADEUS_API_KEY}`
-        }
-    });
-
-    const data = await response.json();
-    displayFlightOptions(data.data);
-}
-
-function displayFlightOptions(flights) {
-    flightOptions.innerHTML = '';
-    flights.forEach(flight => {
-        const option = document.createElement('div');
-        option.innerText = `Flight to ${flight.destination} - ${flight.price.total} USD`;
-        flightOptions.appendChild(option);
-    });
-    flightPopup.style.display = 'flex';
-}
