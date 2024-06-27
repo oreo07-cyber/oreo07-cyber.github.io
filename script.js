@@ -73,4 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Handle initial page load and back/forward navigation
     window.addEventListener("popstate", loadPageContent);
+
+    // Initial page load
+    loadPageContent();
 });
