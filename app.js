@@ -1,113 +1,90 @@
-import CONFIG from './config.js';
+// app.js
 
-const chatBox = document.getElementById('chat-box');
+import config from './config.js';
+
+const OPENAI_API_KEY = config.openai_api_key;
+const AMADEUS_API_KEY = config.amadeus_api_key;
+
 const chatHistory = document.getElementById('chat-history');
 const userInput = document.getElementById('user-input');
 const sendButton = document.getElementById('send-button');
-const bookingPopup = document.getElementById('booking-popup');
+const flightPopup = document.getElementById('flight-popup');
+const closePopup = document.getElementById('close-popup');
 const flightOptions = document.getElementById('flight-options');
-const closeButton = document.querySelector('.close-button');
-const bookButton = document.getElementById('book-button');
 
-const chatHistoryData = [];
-
-function updateChatBox() {
-    chatHistory.innerHTML = '';
-    chatHistoryData.forEach(item => {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add(item.sender === 'bot' ? 'bot-message' : 'user-message');
-        messageElement.textContent = item.message;
-        chatHistory.appendChild(messageElement);
-    });
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-sendButton.addEventListener('click', async () => {
-    const userMessage = userInput.value;
-    if (userMessage.trim() === '') return;
-    chatHistoryData.push({ sender: 'user', message: userMessage });
-    updateChatBox();
-    userInput.value = '';
-
-    if (chatHistoryData.length === 1) {
-        const botResponse = 'How many people are going on vacation?';
-        chatHistoryData.push({ sender: 'bot', message: botResponse });
-        updateChatBox();
-    } else if (chatHistoryData.length === 3) {
-        const botResponse = 'Any pets?';
-        chatHistoryData.push({ sender: 'bot', message: botResponse });
-        updateChatBox();
-    } else if (chatHistoryData.length === 5) {
-        const botResponse = 'What\'s the occasion?';
-        chatHistoryData.push({ sender: 'bot', message: botResponse });
-        updateChatBox();
-    } else if (chatHistoryData.length === 7) {
-        const userPreferences = {
-            people: chatHistoryData[1].message,
-            pets: chatHistoryData[3].message,
-            occasion: chatHistoryData[5].message
-        };
-        suggestCity(userPreferences);
+sendButton.addEventListener('click', () => {
+    const message = userInput.value;
+    if (message.trim() !== '') {
+        addMessageToChat('user', message);
+        getBotResponse(message);
+        userInput.value = '';
     }
 });
 
-async function suggestCity(userPreferences) {
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+userInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        sendButton.click();
+    }
+});
+
+closePopup.addEventListener('click', () => {
+    flightPopup.style.display = 'none';
+});
+
+function addMessageToChat(sender, message) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add(`${sender}-message`);
+    messageElement.innerText = message;
+    chatHistory.appendChild(messageElement);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+async function getBotResponse(message) {
+    addMessageToChat('bot', 'Thinking...');
+    const response = await fetch('https://api.openai.com/v1/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${CONFIG.OPENAI_API_KEY}`
+            'Authorization': `Bearer ${OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-            prompt: `Based on these preferences, suggest a vacation city: ${JSON.stringify(userPreferences)}`,
-            max_tokens: 50
+            model: 'text-davinci-003',
+            prompt: message,
+            max_tokens: 150
         })
     });
+
     const data = await response.json();
-    const city = data.choices[0].text.trim();
-    const botResponse = `Based on your preferences, we suggest visiting ${city}!`;
-    chatHistoryData.push({ sender: 'bot', message: botResponse });
-    updateChatBox();
-    fetchFlights(city);
-}
+    const botMessage = data.choices[0].text.trim();
+    addMessageToChat('bot', botMessage);
 
-async function fetchFlights(city) {
-    try {
-        const response = await fetch(`https://test.api.amadeus.com/v1/shopping/flight-destinations?origin=MAD&destination=${city}&apikey=${CONFIG.AMADEUS_API_KEY}`);
-        const data = await response.json();
-
-        data.data.forEach(flight => {
-            const flightDetails = `Flight to ${flight.destination}: $${flight.price.total}`;
-            chatHistoryData.push({ sender: 'bot', message: flightDetails });
-        });
-        updateChatBox();
-        showBookingPopup(data.data); // Show booking popup with flight details
-    } catch (error) {
-        console.error("Error fetching flights:", error);
+    // After the bot provides a suggestion, fetch flight options
+    if (botMessage.toLowerCase().includes('suggesting')) {
+        fetchFlightOptions(botMessage);
     }
 }
 
-function showBookingPopup(flights) {
+async function fetchFlightOptions(city) {
+    // Simulating API call to Amadeus for flight options
+    addMessageToChat('bot', 'Fetching flight options...');
+    
+    const response = await fetch('https://test.api.amadeus.com/v2/shopping/flight-offers', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${AMADEUS_API_KEY}`
+        }
+    });
+
+    const data = await response.json();
+    displayFlightOptions(data.data);
+}
+
+function displayFlightOptions(flights) {
     flightOptions.innerHTML = '';
     flights.forEach(flight => {
         const option = document.createElement('div');
-        option.textContent = `Flight to ${flight.destination}: $${flight.price.total}`;
+        option.innerText = `Flight to ${flight.destination} - ${flight.price.total} USD`;
         flightOptions.appendChild(option);
     });
-    bookingPopup.style.display = 'block';
+    flightPopup.style.display = 'flex';
 }
-
-closeButton.addEventListener('click', () => {
-    bookingPopup.style.display = 'none';
-});
-
-bookButton.addEventListener('click', () => {
-    alert('Booking confirmed!');
-    bookingPopup.style.display = 'none';
-});
-
-window.onclick = (event) => {
-    if (event.target === bookingPopup) {
-        bookingPopup.style.display = 'none';
-    }
-};

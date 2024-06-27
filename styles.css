@@ -1,80 +1,100 @@
+/* styles.css */
+
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 #chat-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    width: 400px;
+    background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 #chat-box {
-    height: 400px;
+    height: 300px;
     overflow-y: auto;
-    border: 1px solid #ddd;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#chat-history {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-message, .bot-message {
+    margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
-    margin-bottom: 10px;
+}
+
+.user-message {
+    background-color: #e0f7fa;
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #e0e0e0;
+    align-self: flex-start;
 }
 
 #user-input {
-    width: calc(100% - 80px);
+    width: calc(100% - 70px);
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: none;
+    outline: none;
+    font-size: 16px;
 }
 
 #send-button {
     width: 60px;
-    padding: 10px;
-    border: none;
     background-color: #007bff;
     color: white;
-    border-radius: 4px;
+    border: none;
     cursor: pointer;
+    outline: none;
 }
 
-.user-message {
-    text-align: right;
-    margin: 5px 0;
+#send-button:hover {
+    background-color: #0056b3;
 }
 
-.bot-message {
-    text-align: left;
-    margin: 5px 0;
-}
-
-/* Popup Styles */
-.hidden {
+.popup {
     display: none;
-}
-
-#popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#popup-content {
+.popup-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
+    width: 300px;
     text-align: center;
 }
 
-#close-popup {
-    float: right;
-    font-size: 20px;
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
+}
+
+#flight-options div {
+    margin: 10px 0;
 }
