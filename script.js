@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to fetch and display content
     async function fetchContent(hash) {
         try {
-            let response = await fetch(`${hash}`);
+            let response = await fetch(`${hash}.html`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
