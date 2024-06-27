@@ -37,15 +37,15 @@ document.addEventListener("DOMContentLoaded", function() {
     function loadPageContent() {
         let url = window.location.href;
         let hashIndex = url.indexOf("#");
-        let hash = hashIndex !== -1 ? url.substring(hashIndex) : "#home";
+        let hash = hashIndex !== -1 ? url.substring(hashIndex + 1) : "home";
 
         fetchContent(hash);
     }
 
     // Function to fetch and display content
-    async function fetchContent(hash) {
+    async function fetchContent(pageName) {
         try {
-            let response = await fetch(`${hash}.html`);
+            let response = await fetch(`${pageName}.html`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -57,23 +57,20 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Load initial content based on URL hash
+    // Load header and footer content
     loadHeaderContent();
     loadFooterContent();
-    loadPageContent();
 
-    // Event listener for navigation links
+    // Handle navigation
     document.querySelectorAll(".navbar a").forEach(link => {
         link.addEventListener("click", function(event) {
             event.preventDefault();
-            let hash = this.getAttribute("href");
-            fetchContent(hash);
-            history.pushState(null, null, hash);
+            let pageName = this.getAttribute("href").substring(1);
+            fetchContent(pageName);
+            history.pushState(null, null, `#${pageName}`);
         });
     });
 
-    // Handle back/forward browser buttons
-    window.addEventListener("popstate", () => {
-        loadPageContent();
-    });
+    // Handle initial page load and back/forward navigation
+    window.addEventListener("popstate", loadPageContent);
 });
