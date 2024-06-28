@@ -603,7 +603,7 @@ a:focus {
 .team_section {
   text-align: center;
   background-color: #CDD7D6;
-  color: #000000;
+  color: #ffffff;
 }
 
 .team_section .heading_container {
@@ -623,9 +623,7 @@ a:focus {
   -webkit-transition: all .1s;
   transition: all .1s;
   margin-top: 45px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#002759), to(#002b64));
-  background: linear-gradient(to bottom, #002759, #002b64);
-}
+  background: #102542;
 
 .team_section .team_container .box .img-box {
   display: -webkit-box;
