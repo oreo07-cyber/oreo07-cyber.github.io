@@ -623,8 +623,8 @@ a:focus {
   -webkit-transition: all .1s;
   transition: all .1s;
   margin-top: 45px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#102542), to(#002b64));
-  background: linear-gradient(to bottom, #102542, #102542);
+  background: -webkit-gradient(linear, left top, left bottom, from(#CDD7D6), to(#CDD7D6));
+  background: linear-gradient(to bottom, #CDD7D6, #CDD7D6);
 }
 
 .team_section .team_container .box .img-box {
@@ -642,7 +642,7 @@ a:focus {
 .team_section .team_container .box .img-box img {
   width: 120px;
   border-radius: 100%;
-  border: 5px solid #CDD7D6;
+  border: 5px solid #B3A394;
 }
 
 .team_section .team_container .box .detail-box {
@@ -666,7 +666,7 @@ a:focus {
 }
 
 .team_section .team_container .box .social_box a {
-  color: #ffffff;
+  color: #000000;
   font-size: 22px;
 }
 
