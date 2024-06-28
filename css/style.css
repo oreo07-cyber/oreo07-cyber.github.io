@@ -770,12 +770,12 @@ a:focus {
 
 .client_section .owl-carousel .owl-nav .owl-prev:hover,
 .client_section .owl-carousel .owl-nav .owl-next:hover {
-  color: #B3A394;
+  color: #102542;
 }
 
 /* client section end */
 .info_section {
-  background-color: #B3A394;
+  background-color: #102542;
   color: #ffffff;
   padding: 45px 0 15px 0;
 }
