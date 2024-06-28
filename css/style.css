@@ -146,7 +146,7 @@ a:focus {
 .navbar-brand span {
   font-weight: bold;
   font-size: 24px;
-  color: #ffffff;
+  color: #CDD7D6;
 }
 
 .custom_nav-container {
@@ -273,7 +273,7 @@ a:focus {
 }
 
 .slider_section .detail-box {
-  color: #B3A394;
+  color: #102542;
 }
 
 .slider_section .detail-box h1 {
@@ -483,8 +483,8 @@ a:focus {
 }
 
 .about_section {
-  background-color: #B3A394;
-  color: #ffffff;
+  background-color: #CDD7D6;
+  color: #000000;
 }
 
 .about_section .heading_container {
@@ -602,8 +602,8 @@ a:focus {
 /*team section */
 .team_section {
   text-align: center;
-  background-color: #B3A394;
-  color: #ffffff;
+  background-color: #CDD7D6;
+  color: #000000;
 }
 
 .team_section .heading_container {
@@ -919,7 +919,7 @@ a:focus {
 }
 
 .footer_section p {
-  color: #B3A394;
+  color: #102542;
   padding: 25px 0;
   margin: 0;
 }
