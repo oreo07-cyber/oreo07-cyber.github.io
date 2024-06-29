@@ -617,7 +617,7 @@ a:focus {
 }
 
 .team_section .team_container .box {
-  padding: 35px 0 0 0;
+  padding: 20px 0 0 0;
   border-radius: 5px;
   overflow: hidden;
   -webkit-transition: all .1s;
@@ -646,7 +646,7 @@ a:focus {
 }
 
 .team_section .team_container .box .detail-box {
-  margin: 15px 0;
+  margin: 25px 0;
 }
 
 .team_section .team_container .box .detail-box h5 {
