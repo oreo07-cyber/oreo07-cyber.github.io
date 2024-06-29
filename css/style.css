@@ -149,6 +149,11 @@ a:focus {
   color: #CDD7D6;
 }
 
+.navbar-brand .logo {
+  height: auto;
+  max-height: 60px; /* Adjust the height as needed */
+}
+
 .custom_nav-container {
   padding: 0;
 }
