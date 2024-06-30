@@ -488,7 +488,7 @@ a:focus {
 }
 
 .about_section {
-  background-color: #CDD7D6;
+  background-color: #ffffff;
   color: #000000;
 }
 
@@ -935,6 +935,7 @@ a:focus {
 /*# sourceMappingURL=style.css.map */
 
 .packages_section {
+  background-color: #CDD7D6;
   padding: 60px 0;
 }
 
