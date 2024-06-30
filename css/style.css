@@ -938,21 +938,21 @@ a:focus {
   padding: 60px 0;
 }
 
-.heading_container {
+.packages_section .heading_container {
   margin-bottom: 40px;
 }
 
-.heading_container h2 {
+.packages_section .heading_container h2 {
   font-size: 36px;
   font-weight: bold;
 }
 
-.packages_container .row {
+.packages_section .packages_container .row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.package_box {
+.packages_section .package_box {
   border: 1px solid #ddd;
   border-radius: 10px;
   overflow: hidden;
@@ -961,40 +961,40 @@ a:focus {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.package_box:hover {
+.packages_section .package_box:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.img-box {
+.packages_section .packages_img-box {
   width: 100%;
   height: 200px;
   overflow: hidden;
 }
 
-.img-box img {
+.packages_section .packages_img-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.detail-box {
+.packages_section .detail-box {
   padding: 20px;
 }
 
-.detail-box h5 {
+.packages_section .detail-box h5 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.detail-box p {
+.packages_section .detail-box p {
   font-size: 16px;
   color: #666;
   margin-bottom: 20px;
 }
 
-.detail-box button {
+.packages_section .detail-box button {
   display: inline-block;
   padding: 10px 20px;
   background-color: #ff6f61; /* Change this color to match your site's primary color */
@@ -1005,16 +1005,16 @@ a:focus {
   transition: background-color 0.3s ease;
 }
 
-.detail-box button:hover {
+.packages_section .detail-box button:hover {
   background-color: #ff4b3e; /* A slightly darker shade for hover effect */
 }
 
-.btn-box {
+.packages_section .btn-box {
   text-align: center;
   margin-top: 30px;
 }
 
-.btn-box a {
+.packages_section .btn-box a {
   display: inline-block;
   padding: 12px 30px;
   background-color: #ff6f61; /* Change this color to match your site's primary color */
@@ -1025,6 +1025,6 @@ a:focus {
   transition: background-color 0.3s ease;
 }
 
-.btn-box a:hover {
+.packages_section .btn-box a:hover {
   background-color: #ff4b3e; /* A slightly darker shade for hover effect */
 }
