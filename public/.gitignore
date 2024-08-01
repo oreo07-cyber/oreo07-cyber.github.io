@@ -10,3 +10,5 @@ config.js
 
 # IDE files (e.g., Visual Studio Code)
 .vscode/
+
+.env

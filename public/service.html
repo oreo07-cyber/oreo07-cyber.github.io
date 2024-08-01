@@ -83,19 +83,116 @@
 
 
   <!-- service section -->
-
-  <section class="service_section layout_padding">
-    <div class="service_container">
-      <div class="container ">
-        <div class="heading_container heading_center">
-          <h2>
-            Comming <span>Soon</span>
-          </h2>
-        </div>
+  <section class="preferences_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>Plan Your Perfect Vacation</h2>
       </div>
+      <form id="preferencesForm">
+        <div class="form-group">
+          <label for="departure">Departure Location</label>
+          <input type="text" id="departure" name="departure" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="numPeople">Number of People</label>
+          <input type="number" id="numPeople" name="numPeople" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="vacationType">Type of Vacation</label>
+          <select id="vacationType" name="vacationType" class="form-control" required>
+            <option value="beach">Beach</option>
+            <option value="adventure">Adventure</option>
+            <option value="cultural">Cultural</option>
+            <option value="romantic">Romantic</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="budget">Budget ($)</label>
+          <input type="number" id="budget" name="budget" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Find My Vacation</button>
+      </form>
     </div>
   </section>
+  
+  <!-- Pop-up Modal -->
+  <div id="resultModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="resultContent"></div>
+    </div>
+  </div>
 
+  <script>
+    document.getElementById('preferencesForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+    
+      const departure = document.getElementById('departure').value;
+      const numPeople = document.getElementById('numPeople').value;
+      const vacationType = document.getElementById('vacationType').value;
+      const budget = document.getElementById('budget').value;
+    
+      // Generate the AI prompt
+      const prompt = `I want to go on a ${vacationType} vacation with a budget of $${budget} for ${numPeople} people. Where should I go?`;
+    
+      // Call the OpenAI API to get the destination
+      const aiResponse = await fetch('https://api.openai.com/v1/completions', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({ 
+          model: 'text-davinci-003',
+          prompt: prompt,
+          max_tokens: 150
+        })
+      });
+      const aiData = await aiResponse.json();
+      const destination = aiData.choices[0].text.trim();
+    
+      // Call the Amadeus API to search for flights
+      const amadeusResponse = await fetch('https://api.amadeus.com/v2/shopping/flight-offers', {
+        method: 'GET',
+        headers: { 
+          'Authorization': `Bearer ${process.env.AMADEUS_API_KEY}`
+        },
+        params: new URLSearchParams({
+          originLocationCode: departure,
+          destinationLocationCode: destination,
+          departureDate: '2024-12-24', // Example date
+          adults: 1
+        })
+      });
+      const amadeusData = await amadeusResponse.json();
+    
+      const modal = document.getElementById("resultModal");
+      const resultContent = document.getElementById("resultContent");
+      
+      resultContent.innerHTML = `
+        <h2>Your Perfect Vacation</h2>
+        <p>Destination: ${destination}</p>
+        <h3>Flight Options</h3>
+        <ul>
+          ${amadeusData.data.map(flight => `
+            <li>
+              ${flight.itineraries[0].segments[0].departure.iataCode} to ${flight.itineraries[0].segments[0].arrival.iataCode} on ${flight.itineraries[0].segments[0].departure.at}
+              <br> Airline: ${flight.itineraries[0].segments[0].carrierCode} <br> Price: $${flight.price.total}
+            </li>
+          `).join('')}
+        </ul>
+      `;
+      
+      modal.style.display = "block";
+    });
+    
+    // Close the modal
+    document.querySelector(".close").onclick = function() {
+      document.getElementById("resultModal").style.display = "none";
+    };
+    </script>
+    
+  
   <!-- end service section -->
 
   <!-- info section -->
